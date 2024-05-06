@@ -4,7 +4,7 @@ _name=swow
 _upstream=swow/swow
 pkgbase=php-swow
 pkgname=('php-swow' 'php-legacy-swow')
-pkgver=1.3.1
+pkgver=1.5.0
 pkgrel=0
 pkgdesc="Swow coroutine IO extension for PHP"
 arch=('x86_64' 'arm64')
@@ -14,10 +14,8 @@ makedepends=('php' 'php-legacy' 'postgresql-libs')
 depends=('glibc')
 source=(
     "$_name-$pkgver.tar.gz::https://github.com/${_upstream}/archive/refs/tags/v${pkgver}.tar.gz"
-    "pdo_pgsql_lo_lseek64.patch::https://github.com/dixyes/swow/commit/e49489a74e3a4effa8b4fb690448435843592127.patch"
 )
-sha512sums=('1134439609b5252befed00b5904fb1bf502b495f278ad6d011eaa9ab971fcec8128ee8c947ee6dfc187850db8e5a902e8cf4372e8233b74ebaed1dca12684ef7'
-            '02458eb29916fdab27a8ca58174b0427acf170bbff11d0b81c5c8d765c3ec4609ae28ddd2447b40a5cefc0e314462894ab9e0d9b6dc0db888e3feeef5fafb9d0')
+sha512sums=('f940a6e116a36ab7066a45cf92ad8daea44052d38885a4c913c48daa8e3b76dff333fd2b1853a17dcb1bb5bc5758399d6c2e0e7b72f9a05c3614b1eff866c944')
 
 prepare() {
     mv -v "${_name}-${pkgver}" "$pkgbase-$pkgver"
@@ -27,13 +25,13 @@ prepare() {
     cp -av "$pkgbase-$pkgver" "${pkgname[1]}-$pkgver"
 
     (
-        patch --directory="$pkgbase-$pkgver" --forward --strip=1 --input="${srcdir}/pdo_pgsql_lo_lseek64.patch"
+        # patch --directory="$pkgbase-$pkgver" --forward --strip=1 --input="${srcdir}/pdo_pgsql_lo_lseek64.patch"
         cd "$pkgbase-$pkgver/ext"
         phpize
     )
 
     (
-        patch --directory="${pkgname[1]}-$pkgver" --forward --strip=1 --input="${srcdir}/pdo_pgsql_lo_lseek64.patch"
+        # patch --directory="${pkgname[1]}-$pkgver" --forward --strip=1 --input="${srcdir}/pdo_pgsql_lo_lseek64.patch"
         cd "${pkgname[1]}-$pkgver/ext"
         phpize-legacy
     )
